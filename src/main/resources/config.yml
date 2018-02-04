@@ -1,0 +1,9 @@
+# Whether or not to reset recipes when chest recipes are read
+# This allows you to change chest recipes without restarting the server
+# but it will clear other plugins' recipes
+# (This only needs to be turned on in 1.12 as older versions can have recipes removed)
+reset-recipes: false
+# Whether or not to allow hoppers to work with custom chests
+hopper-support: true
+# Hopper speed in ticks (default 8)
+hopper-speed: 8

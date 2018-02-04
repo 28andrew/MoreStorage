@@ -1,0 +1,13 @@
+name: MoreStorage
+description: Adds new types of storage
+author: xXAndrew28Xx
+version: @version@
+main: me.andrew28.morestorage.MoreStorage
+
+commands:
+  morestorage:
+    permission: "morestorage.commands.main.use"
+    aliases: [mstorage]
+  customchest:
+    permission: "morestorage.commands.chest.use"
+    aliases: [customchests, cchests, cchest]
