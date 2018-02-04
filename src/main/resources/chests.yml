@@ -11,7 +11,6 @@ patterns:
 chests:
   coal_chest:
     name: "&8&lCoal Chest"
-    glowing: true
     rows: 4
     recipes:
       normal:
@@ -20,7 +19,6 @@ chests:
         I: minecraft:chest
   stone_chest:
     name: "&7&lStone Chest"
-    glowing: true
     rows: 5
     recipes:
       normal:
