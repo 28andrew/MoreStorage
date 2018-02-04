@@ -2,6 +2,7 @@ package me.andrew28.morestorage.listeners;
 
 import me.andrew28.morestorage.MoreStorage;
 import me.andrew28.morestorage.chest.CustomChest;
+import me.andrew28.morestorage.event.CustomChestDestroyEvent;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -29,6 +30,14 @@ public class ChestDestroyListener extends MoreStorageListener {
         Map<Location, CustomChest> chestMap = moreStorage.getChestMap();
         CustomChest chest = chestMap.get(location);
         if (chest == null) {
+            return;
+        }
+
+        CustomChestDestroyEvent customEvent = new CustomChestDestroyEvent(chest,
+                CustomChestDestroyEvent.DestroyCause.BLOCK_BREAK);
+        moreStorage.getServer().getPluginManager().callEvent(customEvent);
+        if (customEvent.isCancelled()) {
+            event.setCancelled(true);
             return;
         }
 

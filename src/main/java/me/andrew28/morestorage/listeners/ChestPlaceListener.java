@@ -4,6 +4,7 @@ import me.andrew28.morestorage.MoreStorage;
 import me.andrew28.morestorage.chest.ChestIdMetadataValue;
 import me.andrew28.morestorage.chest.CustomChest;
 import me.andrew28.morestorage.chest.CustomChestInfo;
+import me.andrew28.morestorage.event.CustomChestPlaceEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -71,9 +72,15 @@ public class ChestPlaceListener extends MoreStorageListener {
             }
         }
 
+        CustomChest chest = chestInfo.createChest(event.getBlock());
+        CustomChestPlaceEvent customEvent = new CustomChestPlaceEvent(player, chest);
+        moreStorage.getServer().getPluginManager().callEvent(customEvent);
+        if (customEvent.isCancelled()) {
+            return;
+        }
+
         Location location = block.getLocation();
         block.setMetadata("chest_id", new ChestIdMetadataValue(moreStorage, block));
-        CustomChest chest = chestInfo.createChest(event.getBlock());
         chestLocationMap.put(location, chest);
 
         chest.startHopperTaskIfNeeded(moreStorage);

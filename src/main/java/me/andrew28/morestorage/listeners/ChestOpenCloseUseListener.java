@@ -5,6 +5,8 @@ import me.andrew28.morestorage.chest.CustomChest;
 import me.andrew28.morestorage.chest.CustomChestInfo;
 import me.andrew28.morestorage.chest.CustomChestInventoryHolder;
 import me.andrew28.morestorage.chest.ItemFilter;
+import me.andrew28.morestorage.event.CustomChestInventoryCloseEvent;
+import me.andrew28.morestorage.event.CustomChestInventoryEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -77,6 +79,12 @@ public class ChestOpenCloseUseListener extends MoreStorageListener {
             }
         }
 
+        CustomChestInventoryEvent customEvent = new CustomChestInventoryEvent(chest, chest.getInventory());
+        moreStorage.getServer().getPluginManager().callEvent(customEvent);
+        if (customEvent.isCancelled()) {
+            return;
+        }
+
         // Make sure to save this chunk's chest data as the contents of the chest may have changed
         worldChunkListener.changedChunks.add(location.getChunk());
 
@@ -100,7 +108,15 @@ public class ChestOpenCloseUseListener extends MoreStorageListener {
             return;
         }
         // If there's only one viewer left, then they're the one that's about to close it
-        if (chest.getInventory().getViewers().size() == 1) {
+        if (inventory.getViewers().size() == 1) {
+            Player player = (Player) inventory.getViewers().get(0);
+
+            CustomChestInventoryCloseEvent customEvent = new CustomChestInventoryCloseEvent(chest, inventory);
+            moreStorage.getServer().getPluginManager().callEvent(customEvent);
+            if (customEvent.isCancelled()) {
+                return;
+            }
+
             Block block = chest.getBlock();
             World world = block.getWorld();
             // Play chest close sound
