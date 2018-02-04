@@ -1,0 +1,18 @@
+env:
+  global:
+    secure: "chWwh0erRS7R/S42cEmHOThtzXlvl9kgre+moagbZjSIcsqRBKNEDya9mFr8fA/SbXBr0gF5OEhiuKwTVMepegXbFrhiX4SGZXyTq6RRYo5j32lGSVXGBj6VEwPQdiAbSt8GqANXFfhlV4ACh8q8xn/tK+WOsTOx5YFtJBqefZOMRlIxKOhJc/k3yAoMbG+NOUTeGr5kod2ij/7rVvhI0/Vb05aIh5yE32iXLBItySH/KZZjJzO53odvL6VGICcyHHFokNQ11glRKR+kGM/xbDnsQypnCJHJgS3l//YQ/yACS5OxK28luPqmmcVViGpwNOefODoh+DUfGqjsh9rUgDkequAR6iHW8YWn3yqsP27UCPdCj7v70os4gURNEtzvD1bOhIgGST9XzIFlJBBA7NP3eC47f6ViZ0aOaPQVtZIkG0POmdo7nrQL4S6S/IHWuvAxNFpjiWGCEygVTj2gLu8GTo9ns739qspVKw7EXAWuW3fz6DXvWtW80ubALFbEjatoiLzA4PeP2W0jMQuxYJTsh8u6rPOuOL6if0XGQHKcoXRevC4ZN/hIqPUCJOdgIreNavC4IiqlVz8OKvvJ/PQZN1CcUODVLw+GlfQGSm5vWw/wGG6QcXSeWlYehVD1IQP1N6VS4bKtuZDRagFK/ug3U2NNgVO/XsvUNDb4R1M="
+language: java
+before_install:
+- ./travis/spigot-build.sh
+script: ./gradlew javadoc --stacktrace
+after_success:
+- ./travis/javadoc-push.sh
+
+cache:
+  directories:
+    - $HOME/.gradle
+    - $HOME/spigot-build
+
+branches:
+  except:
+  - gh-pages
