@@ -224,13 +224,24 @@ public class ChestsLoader {
             }
             ConfigurationSection itemsSection = section.getConfigurationSection("items");
             for (String key : itemsSection.getKeys(false)) {
-                ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
-                try {
-                    items.add(loadItem(itemSection, null, loadedChests));
-                } catch (ItemLoadException e) {
-                    warn("Invalid item '" + key
-                            + "' in recipe '" + name +
-                            "' of chest '" + chestId + "': " + e.getMessage());
+                if (itemsSection.isString(key)) {
+                    String id = itemsSection.getString(key);
+                    Optional<ItemStack> itemStackOptional = findItemStackById(id, loadedChests);
+                    if (!itemStackOptional.isPresent()) {
+                        warn("Invalid id '" + id + " for an item in the shapeless recipe for the "
+                                + chestId + " chest");
+                        continue;
+                    }
+                    items.add(itemStackOptional.get());
+                } else {
+                    ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
+                    try {
+                        items.add(loadItem(itemSection, null, loadedChests));
+                    } catch (ItemLoadException e) {
+                        warn("Invalid item '" + key
+                                + "' in recipe '" + name +
+                                "' of chest '" + chestId + "': " + e.getMessage());
+                    }
                 }
             }
             recipe = new ShapelessCustomRecipe(result, moreStorage, recipeKey,
