@@ -1,11 +1,14 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+plugins {
+    id 'com.github.johnrengelman.shadow' version '2.0.2'
+    id 'java'
+}
+
 group 'me.andrew28'
-version '0.1.0'
+version '0.1.1'
 
 def spigotVersion = '1.12.2-R0.1-SNAPSHOT'
-
-apply plugin: 'java'
 
 sourceCompatibility = 1.8
 
@@ -20,6 +23,10 @@ repositories {
     maven {
         url 'https://oss.sonatype.org/content/repositories/snapshots/'
     }
+    // bstats
+    maven {
+        url 'http://repo.bstats.org/content/repositories/releases/'
+    }
 }
 
 dependencies {
@@ -27,12 +34,7 @@ dependencies {
     compile group: 'org.spigotmc', name: 'spigot', version: spigotVersion
     compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
     compile group: 'commons-io', name: 'commons-io', version: '2.6'
-}
-
-processResources {
-    filter ReplaceTokens, tokens: [
-        "version": project.property("version")
-    ]
+    compile group: 'org.bstats', name: 'bstats-bukkit', version: '1.2'
 }
 
 test {
@@ -42,3 +44,18 @@ test {
     }
 }
 
+shadowJar {
+    dependencies {
+        include(dependency('org.bstats:bstats-bukkit'))
+    }
+    relocate 'org.bstats', 'me.andrew28.morestorage.org.bstats'
+}
+
+processResources {
+    filter ReplaceTokens, tokens: [
+        "version": project.property("version")
+    ]
+}
+
+jar.enabled = false
+build.dependsOn(shadowJar)

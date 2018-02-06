@@ -16,6 +16,7 @@ import me.andrew28.morestorage.util.ItemUtil;
 import me.andrew28.morestorage.util.Messages;
 import me.andrew28.morestorage.util.NBTUtil;
 import me.andrew28.morestorage.util.ReflectionUtil;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.event.Listener;
@@ -85,6 +86,8 @@ public class MoreStorage extends JavaPlugin {
         // Register commands
         getCommand("morestorage").setExecutor(new MainCommand(this));
         getCommand("customchest").setExecutor(new ChestCommand(this));
+        // Metrics
+        new Metrics(this);
     }
 
     private void reloadChests() {
